@@ -2,8 +2,20 @@ import h5py
 import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
+import os
+import json
+from typing import Dict, Any
 
 fs = 15 # default font size for plots
+
+def load_metadata(input_dir: str) -> Dict[str, Any]:
+    """Load metadata.json and return a dict (with numpy arrays for lists)."""
+    meta_path = os.path.join(input_dir, 'metadata.json')
+    with open(meta_path, 'r') as f:
+        meta = json.load(f)
+    meta['bad_frames'] = np.array(meta['bad_frames'], dtype=int)
+    meta['frame_index'] = np.array(meta['frame_index'], dtype=int)
+    return meta
 
 def h5_to_dict(h5_item):
     data_dict = {}
